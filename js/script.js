@@ -28,10 +28,11 @@ const IS_HIGH_END_DEVICE = (() => {
 })();
 //防止画布在荒谬的屏幕尺寸上变得过大。
 // 8K -如果需要，可以对此进行限制
-const MAX_WIDTH = 7680;
-const MAX_HEIGHT = 4320;
-const GRAVITY = 0.9; //以像素/秒为单位的加速度
-let simSpeed = 1;
+const MAX_WIDTH = 1920;
+const MAX_HEIGHT = 1080
+;
+const GRAVITY = 1.2; //以像素/秒为单位的加速度
+let simSpeed = 0.7;
 
 function getDefaultScaleFactor() {
 	if (IS_MOBILE) return 0.9;
@@ -78,7 +79,7 @@ const mainStage = new Stage("main-canvas");
 const stages = [trailsStage, mainStage];
 
 //随机文字烟花内容
-const randomWords = [ "心想事成","2025春节快乐","马到成功"];
+const randomWords = [ "2025春节快乐","岁在龙蛇","恭喜发财"];
 const wordDotsMap = {};
 randomWords.forEach((word) => {
 	wordDotsMap[word] = MyMath.literalLattice(word, 3, "Gabriola,华文琥珀", "90px");
@@ -597,7 +598,7 @@ function makePistilColor(shellColor) {
 }
 
 // 唯一的 shell 类型
-const crysanthemumShell = (size = 1) => {
+const crysanthemumShell = (size = 4) => {
 	const glitter = Math.random() < 0.25;
 	const singleColor = Math.random() < 0.72;
 	const color = singleColor ? randomColor({ limitWhite: true }) : [randomColor(), randomColor({ notSame: true })];
@@ -610,8 +611,8 @@ const crysanthemumShell = (size = 1) => {
 	if (isHighQuality) starDensity = 1.2;
 	return {
 		shellSize: size,
-		spreadSize: 300 + size * 100,
-		starLife: 900 + size * 200,
+		spreadSize: 50 + size * 100,
+		starLife: 300 + size * 200,
 		starDensity,
 		color,
 		secondColor,
@@ -623,7 +624,7 @@ const crysanthemumShell = (size = 1) => {
 	};
 };
 
-const ghostShell = (size = 1) => {
+const ghostShell = (size = 4) => {
 	// Extend crysanthemum shell
 	const shell = crysanthemumShell(size);
 	// Ghost effect can be fast, so extend star life
@@ -644,12 +645,12 @@ const ghostShell = (size = 1) => {
 	return shell;
 };
 
-const strobeShell = (size = 1) => {
+const strobeShell = (size = 4) => {
 	const color = randomColor({ limitWhite: true });
 	return {
 		shellSize: size,
-		spreadSize: 280 + size * 92,
-		starLife: 1100 + size * 200,
+		spreadSize:  500+ size * 92,
+		starLife:  500+ size * 200,
 		starLifeVariation: 0.4,
 		starDensity: 1.1,
 		color,
@@ -662,7 +663,7 @@ const strobeShell = (size = 1) => {
 	};
 };
 
-const palmShell = (size = 1) => {
+const palmShell = (size = 4) => {
 	const color = randomColor();
 	const thick = Math.random() < 0.5;
 	return {
@@ -675,15 +676,15 @@ const palmShell = (size = 1) => {
 	};
 };
 
-const ringShell = (size = 1) => {
+const ringShell = (size = 4) => {
 	const color = randomColor();
 	const pistil = Math.random() < 0.75;
 	return {
 		shellSize: size,
 		ring: true,
 		color,
-		spreadSize: 300 + size * 100,
-		starLife: 900 + size * 200,
+		spreadSize: 100 + size * 100,
+		starLife: 200 + size * 200,
 		starCount: 2.2 * PI_2 * (size + 1),
 		pistil,
 		pistilColor: makePistilColor(color),
@@ -694,12 +695,12 @@ const ringShell = (size = 1) => {
 	// return Object.assign({}, defaultShell, config);
 };
 
-const crossetteShell = (size = 1) => {
+const crossetteShell = (size = 4) => {
 	const color = randomColor({ limitWhite: true });
 	return {
 		shellSize: size,
-		spreadSize: 300 + size * 100,
-		starLife: 750 + size * 160,
+		spreadSize: 200+ size * 100,
+		starLife: 300 + size * 160,
 		starLifeVariation: 0.4,
 		starDensity: 0.85,
 		color,
@@ -709,9 +710,9 @@ const crossetteShell = (size = 1) => {
 	};
 };
 
-const floralShell = (size = 1) => ({
+const floralShell = (size = 4) => ({
 	shellSize: size,
-	spreadSize: 300 + size * 120,
+	spreadSize: 200 + size * 120,
 	starDensity: 0.12,
 	starLife: 500 + size * 50,
 	starLifeVariation: 0.5,
@@ -719,36 +720,36 @@ const floralShell = (size = 1) => ({
 	floral: true,
 });
 
-const fallingLeavesShell = (size = 1) => ({
+const fallingLeavesShell = (size = 4) => ({
 	shellSize: size,
 	color: INVISIBLE,
-	spreadSize: 300 + size * 120,
+	spreadSize: 100 + size * 120,
 	starDensity: 0.12,
-	starLife: 500 + size * 50,
+	starLife: 2200 + size * 50,
 	starLifeVariation: 0.5,
 	glitter: "medium",
 	glitterColor: COLOR.Gold,
 	fallingLeaves: true,
 });
 
-const willowShell = (size = 1) => ({
+const willowShell = (size = 4) => ({
 	shellSize: size,
-	spreadSize: 300 + size * 100,
+	spreadSize: 0 + size * 100,
 	starDensity: 0.6,
-	starLife: 3000 + size * 300,
+	starLife: 0 + size * 300,
 	glitter: "willow",
 	glitterColor: COLOR.Gold,
 	color: INVISIBLE,
 });
 
-const crackleShell = (size = 1) => {
+const crackleShell = (size = 4) => {
 	// favor gold
 	const color = Math.random() < 0.75 ? COLOR.Gold : randomColor();
 	return {
 		shellSize: size,
-		spreadSize: 380 + size * 75,
+		spreadSize: 100 + size * 75,
 		starDensity: isLowQuality ? 0.65 : 1,
-		starLife: 600 + size * 100,
+		starLife: 1000 + size * 100,
 		starLifeVariation: 0.32,
 		glitter: "light",
 		glitterColor: COLOR.Gold,
@@ -759,15 +760,15 @@ const crackleShell = (size = 1) => {
 	};
 };
 
-const horsetailShell = (size = 1) => {
+const horsetailShell = (size = 4) => {
 	const color = randomColor();
 	return {
 		shellSize: size,
 		horsetail: true,
 		color,
-		spreadSize: 250 + size * 38,
+		spreadSize:  100+size * 38,
 		starDensity: 0.9,
-		starLife: 2500 + size * 300,
+		starLife:  1000+size * 300,
 		glitter: "medium",
 		glitterColor: Math.random() < 0.5 ? whiteOrGold() : color,
 		// Add strobe effect to white horsetails, to make them more interesting

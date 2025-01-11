@@ -10,7 +10,7 @@ const MyMath = (function MyMathFactory(Math) {
 	const MyMath = {};
 
 	// degree/radian conversion constants
-	MyMath.toDeg = 180 / Math.PI;
+	MyMath.toDeg = 18 / Math.PI;
 	MyMath.toRad = Math.PI / 180;
 	MyMath.halfPI = Math.PI / 2;
 	MyMath.twoPI = Math.PI * 2;
